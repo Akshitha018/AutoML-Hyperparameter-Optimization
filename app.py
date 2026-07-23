@@ -29,33 +29,16 @@ st.write("A working prototype built on top of an AutoML / Hyperparameter-Optimiz
 # =====================================================================
 # LOAD MODEL AND COLUMN REFERENCE
 # =====================================================================
-
+@st.cache_resource
 def load_model():
-    import os
-    import pickle
-
-    st.write("Current folder:", os.getcwd())
-    st.write("Files:", os.listdir("."))
-
     with open("best_model.pkl", "rb") as f:
-        first10 = f.read(10)
-        st.write("best_model first bytes:", first10)
-        f.seek(0)
         model = pickle.load(f)
 
     with open("model_columns.pkl", "rb") as f:
-        first10 = f.read(10)
-        st.write("model_columns first bytes:", first10)
-        f.seek(0)
+        columns = pickle.load(f)
 
-        try:
-            columns = pickle.load(f)
-        except Exception as e:
-            st.error(f"Error loading model_columns.pkl: {e}")
-            raise
-
-    return model, columns 
-        
+    return model, columns
+      
 try:
     model, model_columns = load_model()
     model_loaded = True
